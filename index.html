@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wealth Pro v10.33</title>
+    <title>Wealth Pro v10.41</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#4f46e5">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -17,20 +17,21 @@
         .tab-active { color: #4f46e5 !important; border-bottom: 2px solid #4f46e5; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .hidden { display: none !important; }
+        select { color: #1f2937 !important; background-color: #f3f4f6 !important; }
     </style>
 </head>
 <body class="bg-gray-50 pb-32">
 
     <div id="lock-screen" class="fixed inset-0 bg-indigo-900 z-[100] flex flex-col items-center justify-center p-8 text-white">
-        <h2 class="text-2xl font-black mb-4 italic uppercase">Wealth Pro Master</h2>
+        <h2 class="text-2xl font-black mb-4 italic uppercase text-center font-black">Wealth Pro Master</h2>
         <input type="password" id="pass-input" placeholder="Enter Key" class="w-full p-4 rounded-2xl bg-white/10 border border-white/20 mb-4 text-center outline-none">
-        <button onclick="window.verifyLock()" class="w-full bg-white text-indigo-900 py-4 rounded-2xl font-black shadow-xl">UNLOCK</button>
+        <button onclick="window.verifyLock()" class="w-full bg-white text-indigo-900 py-4 rounded-2xl font-black shadow-xl uppercase">Unlock</button>
     </div>
 
     <div id="main-ui" class="hidden">
         <div class="bg-indigo-700 text-white p-6 rounded-b-[2.5rem] shadow-xl sticky top-0 z-30">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-lg font-black tracking-tighter uppercase italic">Thillai Wealth Pro v10.33</h1>
+                <h1 class="text-lg font-black tracking-tighter uppercase italic">Wealth Pro v10.41 SIP</h1>
                 <button onclick="localStorage.removeItem('wealth_pro_key'); location.reload();" class="text-[8px] opacity-40 font-bold uppercase">Logout</button>
             </div>
             <div id="balance-chips" class="flex gap-2 overflow-x-auto no-scrollbar mb-4 pb-2"></div>
@@ -43,25 +44,71 @@
         <div class="p-4 space-y-4">
             <div id="view-home"><div id="transaction-list" class="space-y-3"></div></div>
             <div id="view-stocks" class="hidden space-y-4">
-                <div class="bg-indigo-600 text-white p-6 rounded-[2rem] shadow-lg text-center border-4 border-indigo-500/30"><p class="text-[10px] text-indigo-100 uppercase font-black mb-1">Total Invested</p><p id="total-invested-amt" class="text-4xl font-black italic">₹0</p></div>
+                <div class="bg-indigo-600 text-white p-6 rounded-[2rem] shadow-lg text-center border-4 border-indigo-500/30"><p class="text-[10px] text-indigo-100 uppercase font-black tracking-[0.2em] mb-1">Total Amount Invested</p><p id="total-invested-amt" class="text-4xl font-black tracking-tighter italic">₹0</p></div>
                 <div id="stock-list" class="grid grid-cols-1 gap-3"></div>
             </div>
             <div id="view-debt" class="hidden space-y-4"><h2 class="text-xs font-black text-gray-400 uppercase tracking-widest px-2">Loan Progress</h2><div id="debt-list" class="grid grid-cols-1 gap-3"></div><div class="bg-indigo-50 p-4 rounded-2xl border border-indigo-100 text-center font-black text-indigo-900" id="total-remaining-debt">₹0</div></div>
+            
             <div id="view-report" class="hidden space-y-6">
                 <div class="bg-white p-4 rounded-3xl border shadow-sm space-y-3">
                     <div class="grid grid-cols-2 gap-2"><input type="date" id="filter-from" class="bg-gray-50 p-2 rounded-xl border text-xs"><input type="date" id="filter-to" class="bg-gray-50 p-2 rounded-xl border text-xs"></div>
-                    <div class="grid grid-cols-2 gap-2"><select id="rpt-cat" onchange="window.updateRptSubs()" class="bg-gray-50 p-2 rounded-xl border text-[10px] font-bold"></select><select id="rpt-sub" class="bg-gray-50 p-2 rounded-xl border text-[10px] font-bold"></select></div>
-                    <button onclick="window.generateAnalytics()" class="w-full bg-indigo-600 text-white py-2 rounded-xl font-bold">Apply Filters</button>
+                    <div class="grid grid-cols-2 gap-2"><select id="rpt-cat" onchange="window.updateRptSubs()" class="bg-gray-50 p-2 rounded-xl border text-xs font-bold"></select><select id="rpt-sub" class="bg-gray-50 p-2 rounded-xl border text-xs font-bold"></select></div>
+                    <button onclick="window.generateAnalytics()" class="w-full bg-indigo-600 text-white py-2 rounded-xl font-bold uppercase text-xs">Apply Filters</button>
                 </div>
                 <div class="bg-white p-4 rounded-3xl border shadow-sm"><canvas id="expenseChart"></canvas></div>
                 <div id="report-list" class="bg-white p-5 rounded-3xl border space-y-3 font-bold"></div>
-                <button onclick="window.downloadExcel()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black">Download Excel</button>
+                <button onclick="window.downloadExcel()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black uppercase text-xs">Download Excel</button>
             </div>
-            <div id="view-settings" class="hidden space-y-6 text-center">
-                <h2 class="text-xl font-black text-gray-800">Settings</h2>
-                <div class="bg-white p-5 rounded-3xl border text-left space-y-4 shadow-sm"><input type="text" id="new-cat-name" placeholder="Category Name" class="w-full p-3 bg-gray-50 rounded-xl border"><input type="text" id="new-cat-icon" placeholder="Emoji" class="w-full p-3 bg-gray-50 rounded-xl border"><input type="text" id="new-cat-subs" placeholder="Sub-items" class="w-full p-3 bg-gray-50 rounded-xl border"><button onclick="window.saveCategory()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold">Save Category</button></div>
-                <div class="bg-white p-5 rounded-3xl border text-left space-y-4 shadow-sm"><input type="text" id="new-pay-bank" placeholder="Bank Name" class="w-full p-3 bg-gray-50 rounded-xl border"><button onclick="window.savePaymentMethod()" class="w-full bg-gray-800 text-white py-3 rounded-xl font-bold">Add Bank</button></div>
-                <div class="bg-white p-5 rounded-3xl border text-left space-y-4 shadow-sm"><input type="text" id="loan-setup-name" placeholder="Sub-Cat Name" class="w-full p-3 bg-gray-50 rounded-xl border"><input type="number" id="loan-setup-amt" placeholder="Loan Amount" class="w-full p-3 bg-gray-50 rounded-xl border"><button onclick="window.saveLoanBase()" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold">Set Loan Base</button></div>
+
+            <div id="view-settings" class="hidden space-y-6">
+                <h2 class="text-xl font-black text-gray-800 text-center uppercase tracking-tighter italic">Settings</h2>
+                
+                <div class="bg-white p-6 rounded-[2.5rem] border border-indigo-200 shadow-sm space-y-4">
+                    <p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest text-center">Auto-Pay Scheduler (SIP/Rent)</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="space-y-1">
+                            <p class="text-[8px] text-gray-400 font-bold uppercase ml-1">Day (1-31)</p>
+                            <input type="number" id="recur-day" class="w-full p-4 bg-gray-100 rounded-2xl border-none outline-none font-bold text-sm text-gray-800">
+                        </div>
+                        <div class="space-y-1">
+                            <p class="text-[8px] text-gray-400 font-bold uppercase ml-1">Amount ₹</p>
+                            <input type="number" id="recur-amt" class="w-full p-4 bg-gray-100 rounded-2xl border-none outline-none font-bold text-sm text-gray-800">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <select id="recur-cat" onchange="window.updateRecurSubs()" class="w-full p-4 rounded-2xl border-none font-bold text-xs outline-none"></select>
+                        <select id="recur-sub" class="w-full p-4 rounded-2xl border-none font-bold text-xs outline-none"></select>
+                    </div>
+                    <select id="recur-acc" class="w-full p-4 rounded-2xl border-none font-bold text-xs outline-none"></select>
+                    <input type="text" id="recur-note" placeholder="Note (e.g. Monthly SIP)" class="w-full p-4 bg-gray-100 rounded-2xl border-none outline-none font-bold text-sm text-gray-800">
+                    <button onclick="window.saveRecurring()" class="w-full bg-indigo-600 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-lg">Save Auto-Pay</button>
+                </div>
+
+                <div class="bg-white p-6 rounded-[2.5rem] border shadow-sm space-y-4 border-indigo-100">
+                    <p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest text-center">Category Manager</p>
+                    <input type="hidden" id="edit-cat-id">
+                    <input type="text" id="new-cat-name" placeholder="Category Name" class="w-full p-4 bg-gray-100 rounded-2xl border-none font-bold text-sm outline-none text-gray-800">
+                    <input type="text" id="new-cat-icon" placeholder="Emoji" class="w-full p-4 bg-gray-100 rounded-2xl border-none font-bold text-sm outline-none text-gray-800">
+                    <textarea id="new-cat-subs" placeholder="Sub-items (comma separated)" class="w-full p-4 bg-gray-100 rounded-2xl border-none font-bold text-xs h-24 outline-none text-gray-800"></textarea>
+                    <div class="flex gap-2">
+                        <button onclick="window.saveCategory()" class="flex-[2] bg-indigo-600 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-lg">Save</button>
+                        <button id="del-cat-btn" onclick="window.deleteCategory()" class="hidden flex-1 bg-red-50 text-red-600 py-4 rounded-2xl font-black uppercase text-[10px] border border-red-100">Delete</button>
+                    </div>
+                    <div id="existing-cats-list" class="flex flex-wrap gap-2 pt-2 justify-center"></div>
+                </div>
+
+                <div class="bg-white p-6 rounded-[2.5rem] border shadow-sm space-y-4 border-gray-100">
+                    <p class="text-[10px] font-black text-gray-600 uppercase tracking-widest text-center">Bank Manager</p>
+                    <input type="text" id="new-pay-bank" placeholder="Bank Name" class="w-full p-4 bg-gray-100 rounded-2xl border-none font-bold text-sm outline-none text-gray-800">
+                    <button onclick="window.savePaymentMethod()" class="w-full bg-gray-800 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-lg uppercase">Add Bank</button>
+                </div>
+
+                <div class="bg-white p-6 rounded-[2.5rem] border shadow-sm space-y-4 border-red-50">
+                    <p class="text-[10px] font-black text-red-600 uppercase tracking-widest text-center">Loan Setup</p>
+                    <input type="text" id="loan-setup-name" placeholder="Sub-Cat Name" class="w-full p-4 bg-gray-100 rounded-2xl border-none font-bold text-sm outline-none text-gray-800">
+                    <input type="number" id="loan-setup-amt" placeholder="Total Loan Amount" class="w-full p-4 bg-gray-100 rounded-2xl border-none font-bold text-sm outline-none text-gray-800">
+                    <button onclick="window.saveLoanBase()" class="w-full bg-red-600 text-white py-4 rounded-2xl font-black uppercase text-xs shadow-lg uppercase">Set Loan Base</button>
+                </div>
             </div>
         </div>
 
@@ -78,18 +125,18 @@
             <div id="modal-container" class="bg-white w-full rounded-t-[3rem] p-8 modal-slide-up max-h-[90vh] overflow-y-auto">
                 <form id="transactionForm" class="space-y-4">
                     <input type="hidden" id="editId">
-                    <div class="flex bg-gray-100 p-1 rounded-2xl"><button type="button" id="typeExp" onclick="window.setType('Expense')" class="flex-1 py-3 rounded-xl font-bold bg-white text-red-600 shadow-sm uppercase text-[10px]">Expense</button><button type="button" id="typeInc" onclick="window.setType('Income')" class="flex-1 py-3 rounded-xl font-bold text-gray-500 uppercase text-[10px]">Income</button><button type="button" id="typeTrf" onclick="window.setType('Transfer')" class="flex-1 py-3 rounded-xl font-bold text-gray-500 uppercase text-[10px]">Transfer</button></div>
+                    <div class="flex bg-gray-100 p-1 rounded-2xl"><button type="button" id="typeExp" onclick="window.setType('Expense')" class="flex-1 py-3 rounded-xl font-bold bg-white text-red-600 shadow-sm uppercase text-xs">Expense</button><button type="button" id="typeInc" onclick="window.setType('Income')" class="flex-1 py-3 rounded-xl font-bold text-gray-500 uppercase text-xs">Income</button><button type="button" id="typeTrf" onclick="window.setType('Transfer')" class="flex-1 py-3 rounded-xl font-bold text-gray-500 uppercase text-xs">Transfer</button></div>
                     <div class="grid grid-cols-2 gap-2"><input type="number" id="amount" placeholder="₹ 0" class="w-full text-4xl font-black p-4 bg-transparent outline-none border-b" required><input type="date" id="entry-date" class="w-full p-4 bg-gray-50 rounded-2xl font-bold text-xs border-none outline-none"></div>
-                    <div id="normal-fields" class="space-y-4"><select id="category" onchange="window.updateSubCats()" class="w-full p-4 bg-gray-50 rounded-2xl font-bold border-none outline-none"></select><select id="subCategory" class="w-full p-4 bg-gray-50 rounded-2xl font-bold border-none outline-none"></select><select id="account" class="w-full p-4 bg-gray-50 rounded-2xl font-bold border-none outline-none"></select></div>
-                    <div id="transfer-fields" class="space-y-4 hidden"><select id="from-account" class="w-full p-4 bg-red-50 rounded-2xl font-bold border-none outline-none"></select><select id="to-account" class="w-full p-4 bg-green-50 rounded-2xl font-bold border-none outline-none"></select></div>
-                    <input type="text" id="note" placeholder="Note" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><div class="flex gap-3 pt-4"><button type="button" id="deleteBtn" onclick="window.confirmDelete()" class="hidden flex-1 bg-red-50 text-red-600 py-4 rounded-2xl font-bold uppercase text-xs">Delete</button><button type="submit" class="flex-[2] bg-indigo-700 text-white py-4 rounded-2xl font-black text-lg shadow-xl uppercase">Save</button></div><button type="button" onclick="window.closeModal()" class="w-full text-gray-400 font-bold py-2 uppercase text-xs">Close</button>
+                    <div id="normal-fields" class="space-y-4"><select id="category" onchange="window.updateSubCats()" class="w-full p-4 rounded-2xl font-bold border-none outline-none"></select><select id="subCategory" class="w-full p-4 rounded-2xl font-bold border-none outline-none"></select><select id="account" class="w-full p-4 rounded-2xl font-bold border-none outline-none"></select></div>
+                    <div id="transfer-fields" class="space-y-4 hidden"><select id="from-account" class="w-full p-4 rounded-2xl font-bold border-none outline-none"></select><select id="to-account" class="w-full p-4 rounded-2xl font-bold border-none outline-none"></select></div>
+                    <input type="text" id="note" placeholder="Note" class="w-full p-4 bg-gray-50 rounded-2xl border-none"><div class="flex gap-3 pt-4"><button type="button" id="deleteBtn" onclick="window.confirmDelete()" class="hidden flex-1 bg-red-50 text-red-600 py-4 rounded-2xl font-bold uppercase text-xs">Delete</button><button type="submit" class="flex-[2] bg-indigo-700 text-white py-4 rounded-2xl font-black text-lg shadow-xl uppercase">Save</button></div><button type="button" onclick="window.closeModal()" class="w-full text-gray-400 font-bold py-2 uppercase text-[10px]">Close</button>
                 </form>
             </div>
         </div>
     </div>
 
     <script type="module">
-        const firebaseConfig = {
+         const firebaseConfig = {
   apiKey: "AIzaSyDjPbgzgVnllY9tF-kv1WFadZHwi4pjWtw",
   authDomain: "thillai-expence-tracker.firebaseapp.com",
   projectId: "thillai-expence-tracker",
@@ -101,13 +148,14 @@
 
         const MASTER_PASS = "Thillai@2026";
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, query, where, getDocs, orderBy, onSnapshot, Timestamp, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, query, where, getDocs, orderBy, onSnapshot, Timestamp, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         let currentType = 'Expense';
-        window.transactionDataMap = {}; // Global store to fix onclick crash
+        window.transactionDataMap = {};
+        let dynamicCats = {};
 
         window.setType = (t) => { 
             currentType = t; 
@@ -147,37 +195,67 @@
         if(localStorage.getItem('wealth_pro_key') === MASTER_PASS) { document.getElementById('lock-screen').classList.add('hidden'); document.getElementById('main-ui').classList.remove('hidden'); initApp(); }
 
         function initApp() {
-            let allData = [], dynamicCats = {}, loanBases = {}, myChart = null;
+            let allData = [], loanBases = {}, myChart = null;
             const defaultCats = { "Grocery": {icon: "🛒", subs: ["Food"]}, "Investment": {icon: "📈", subs: ["Stocks"]}, "Liabilities": {icon: "🏦", subs: ["Loan"]} };
 
             onSnapshot(collection(db, "categories"), (snap) => {
-                const catSel = document.getElementById('category'); const rptFilter = document.getElementById('rpt-cat');
+                const catSel = document.getElementById('category'); 
+                const rptFilter = document.getElementById('rpt-cat');
+                const recurCat = document.getElementById('recur-cat');
+                const existingList = document.getElementById('existing-cats-list');
+                
                 catSel.innerHTML = ""; rptFilter.innerHTML = '<option value="All">All Categories</option>';
+                recurCat.innerHTML = ""; existingList.innerHTML = "";
+                
                 dynamicCats = JSON.parse(JSON.stringify(defaultCats));
-                snap.forEach(d => { const data = d.data(); dynamicCats[data.name] = {subs: data.subs, icon: data.icon}; });
-                Object.entries(dynamicCats).forEach(([k,v]) => { const opt = `<option value="${k}">${v.icon} ${k}</option>`; catSel.innerHTML += opt; rptFilter.innerHTML += opt; });
-                window.updateSubCats(); window.updateRptSubs();
+                snap.forEach(d => { 
+                    const data = d.data(); const catKey = data.name || d.id;
+                    dynamicCats[catKey] = {subs: data.subs || [], icon: data.icon || '💰'}; 
+                    existingList.innerHTML += `<button onclick="window.loadCatToForm('${d.id}', '${catKey}', '${(data.subs || []).join(', ')}')" class="bg-indigo-50 text-indigo-700 px-4 py-2 rounded-2xl text-[10px] font-black border border-indigo-100 shadow-sm">${data.icon} ${catKey}</button>`;
+                });
+                
+                Object.entries(dynamicCats).forEach(([k,v]) => { 
+                    const opt = `<option value="${k}">${v.icon} ${k}</option>`; 
+                    catSel.innerHTML += opt; rptFilter.innerHTML += opt; recurCat.innerHTML += opt;
+                });
+                window.updateSubCats(); window.updateRptSubs(); window.updateRecurSubs();
             });
+
+            window.loadCatToForm = (id, n, i, s) => {
+                document.getElementById('edit-cat-id').value = id;
+                document.getElementById('new-cat-name').value = n;
+                document.getElementById('new-cat-icon').value = i;
+                document.getElementById('new-cat-subs').value = s;
+                document.getElementById('del-cat-btn').classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
 
             onSnapshot(collection(db, "payment_methods"), (snap) => {
-                const a = document.getElementById('account'); const f = document.getElementById('from-account'); const t = document.getElementById('to-account');
-                a.innerHTML = ""; f.innerHTML = ""; t.innerHTML = "";
+                const a = document.getElementById('account'); const f = document.getElementById('from-account'); const t = document.getElementById('to-account'); const r = document.getElementById('recur-acc');
+                a.innerHTML = ""; f.innerHTML = ""; t.innerHTML = ""; r.innerHTML = "";
                 let m = ["Cash", "HDFC"]; snap.forEach(d => m.push(d.data().name));
-                [...new Set(m)].forEach(p => { const opt = `<option value="${p}">${p}</option>`; a.innerHTML += opt; f.innerHTML += opt; t.innerHTML += opt; });
+                [...new Set(m)].forEach(p => { const opt = `<option value="${p}">${p}</option>`; a.innerHTML += opt; f.innerHTML += opt; t.innerHTML += opt; r.innerHTML += opt; });
             });
 
-            onSnapshot(collection(db, "loan_bases"), (snap) => { loanBases = {}; snap.forEach(d => loanBases[d.id] = d.data().total); });
+            onSnapshot(collection(db, "recurring"), (snap) => {
+                const today = new Date();
+                const currentMonthYear = `${today.getMonth() + 1}-${today.getFullYear()}`;
+                snap.forEach(async (d) => {
+                    const data = d.data();
+                    if (today.getDate() >= data.day && data.lastPaid !== currentMonthYear) {
+                        await addDoc(collection(db, "transactions"), { type: 'Expense', amount: data.amount, category: data.category, subCategory: data.subCategory, account: data.account, note: `[AUTO] ${data.note}`, date: serverTimestamp() });
+                        await updateDoc(doc(db, "recurring", d.id), { lastPaid: currentMonthYear });
+                    }
+                });
+            });
 
             onSnapshot(query(collection(db, "transactions"), orderBy("date", "desc")), (snap) => {
                 allData = []; let inc = 0, exp = 0; const list = document.getElementById('transaction-list'); list.innerHTML = "";
                 const wallet = {}; window.transactionDataMap = {};
                 snap.forEach(d => {
-                    const item = {id: d.id, ...d.data()}; 
-                    allData.push(item);
-                    window.transactionDataMap[d.id] = item;
+                    const item = {id: d.id, ...d.data()}; allData.push(item); window.transactionDataMap[d.id] = item;
                     if(item.type === 'Income') { inc += item.amount; wallet[item.account] = (wallet[item.account] || 0) + item.amount; }
                     else { exp += item.amount; wallet[item.account] = (wallet[item.account] || 0) - item.amount; }
-                    
                     const dateStr = item.date?.toDate ? item.date.toDate().toLocaleDateString('en-GB', {day:'2-digit', month:'short'}) : '';
                     list.innerHTML += `<div class="bg-white p-4 rounded-3xl flex justify-between items-center shadow-sm border border-gray-100" onclick="window.openModal('${d.id}')">
                         <div class="flex-1"><p class="font-black text-gray-800 text-sm leading-none">${dynamicCats[item.category]?.icon || '💰'} ${item.category}</p><p class="text-[9px] text-gray-400 font-bold uppercase mt-1">${item.subCategory} • ${item.account}</p>
@@ -190,19 +268,25 @@
                 renderStocks(); renderDebts();
             });
 
+            window.saveRecurring = async () => {
+                const day = parseInt(document.getElementById('recur-day').value);
+                const amt = parseFloat(document.getElementById('recur-amt').value);
+                const cat = document.getElementById('recur-cat').value;
+                const sub = document.getElementById('recur-sub').value;
+                const acc = document.getElementById('recur-acc').value;
+                const note = document.getElementById('recur-note').value;
+                if(day && amt) { await addDoc(collection(db, "recurring"), { day, amount: amt, category: cat, subCategory: sub, account: acc, note, lastPaid: "" }); alert("Auto-Pay Scheduled!"); }
+            };
+
             window.updateSubCats = () => { const m = document.getElementById('category').value; const sub = document.getElementById('subCategory'); sub.innerHTML = ""; if(dynamicCats[m]) dynamicCats[m].subs.forEach(s => sub.innerHTML += `<option value="${s}">${s}</option>`); };
+            window.updateRecurSubs = () => { const m = document.getElementById('recur-cat').value; const sub = document.getElementById('recur-sub'); sub.innerHTML = ""; if(dynamicCats[m]) dynamicCats[m].subs.forEach(s => sub.innerHTML += `<option value="${s}">${s}</option>`); };
             window.updateRptSubs = () => { const cat = document.getElementById('rpt-cat').value; const sub = document.getElementById('rpt-sub'); sub.innerHTML = '<option value="All">All Subs</option>'; if(cat !== 'All' && dynamicCats[cat]) dynamicCats[cat].subs.forEach(s => sub.innerHTML += `<option value="${s}">${s}</option>`); };
             window.switchView = (v) => { ['home', 'stocks', 'debt', 'report', 'settings'].forEach(id => { document.getElementById(`view-${id}`).classList.toggle('hidden', id !== v); document.getElementById(`nav-${id}`).classList.toggle('tab-active', id === v); if (id !== v) document.getElementById(`nav-${id}`).classList.add('text-gray-400'); else document.getElementById(`nav-${id}`).classList.remove('text-gray-400'); }); if(v === 'report') window.generateAnalytics(); if(v === 'stocks') renderStocks(); if(v === 'debt') renderDebts(); };
 
             document.getElementById('transactionForm').addEventListener('submit', async (e) => {
-                e.preventDefault(); 
-                const dVal = document.getElementById('entry-date').value;
-                const amt = parseFloat(document.getElementById('amount').value);
-                const noteVal = document.getElementById('note').value;
-                const ts = Timestamp.fromDate(new Date(dVal));
+                e.preventDefault(); const dVal = document.getElementById('entry-date').value; const amt = parseFloat(document.getElementById('amount').value); const noteVal = document.getElementById('note').value; const ts = Timestamp.fromDate(new Date(dVal));
                 if(currentType === 'Transfer'){
-                    const from = document.getElementById('from-account').value;
-                    const to = document.getElementById('to-account').value;
+                    const from = document.getElementById('from-account').value; const to = document.getElementById('to-account').value;
                     await addDoc(collection(db, "transactions"), { type: 'Expense', amount: amt, category: 'Transfer', subCategory: 'Outgoing', account: from, note: `To ${to}: ${noteVal}`, date: ts });
                     await addDoc(collection(db, "transactions"), { type: 'Income', amount: amt, category: 'Transfer', subCategory: 'Incoming', account: to, note: `From ${from}: ${noteVal}`, date: ts });
                 } else {
@@ -213,43 +297,42 @@
                 window.closeModal();
             });
 
-            window.saveCategory = async () => { const n = document.getElementById('new-cat-name').value.trim(); const i = document.getElementById('new-cat-icon').value.trim(); const s = document.getElementById('new-cat-subs').value.split(',').map(x => x.trim()).filter(x => x !== ""); if(n && i) { await addDoc(collection(db, "categories"), { name: n, icon: i, subs: s }); alert("Saved!"); } };
+            window.saveCategory = async () => { 
+                const n = document.getElementById('new-cat-name').value.trim(); const i = document.getElementById('new-cat-icon').value.trim(); const subInput = document.getElementById('new-cat-subs').value; const s = subInput.split(',').map(x => x.trim()).filter(x => x !== ""); 
+                if(n && i) { const docRef = doc(db, "categories", n); const docSnap = await getDoc(docRef); await setDoc(docRef, { name: n, icon: i, subs: s }); 
+                if (docSnap.exists()) alert("Category Updated!"); else alert("Add New Category!");
+                document.getElementById('new-cat-name').value = ""; document.getElementById('new-cat-icon').value = ""; document.getElementById('new-cat-subs').value = ""; document.getElementById('del-cat-btn').classList.add('hidden'); }
+            };
+
+            window.deleteCategory = async () => { const id = document.getElementById('edit-cat-id').value; if(id && confirm("Delete?")) { await deleteDoc(doc(db, "categories", id)); alert("Deleted!"); document.getElementById('new-cat-name').value = ""; document.getElementById('new-cat-icon').value = ""; document.getElementById('new-cat-subs').value = ""; document.getElementById('del-cat-btn').classList.add('hidden'); } };
             window.savePaymentMethod = async () => { const n = document.getElementById('new-pay-bank').value.trim(); if(n) { await addDoc(collection(db, "payment_methods"), { name: n }); alert("Added!"); } };
-            window.saveLoanBase = async () => { const n = document.getElementById('loan-setup-name').value.trim(); const t = parseFloat(document.getElementById('loan-setup-amt').value); if(n && t) { await setDoc(doc(db, "loan_bases", n), { total: t }); alert("Linked!"); } };
+            window.saveLoanBase = async () => { 
+                const n = document.getElementById('loan-setup-name').value.trim(); const t = parseFloat(document.getElementById('loan-setup-amt').value); 
+                if(n && t) { await setDoc(doc(db, "loan_bases", n), { total: t }); alert("Linked!"); } 
+            };
             window.confirmDelete = async () => { if(confirm("Delete?")) { await deleteDoc(doc(db, "transactions", document.getElementById('editId').value)); window.closeModal(); } };
             
             function renderDebts() {
-                const list = document.getElementById('debt-list'); if(!list) return; let remG = 0; const paid = {};
-                allData.filter(t => t.category.toLowerCase().includes("liabilities")).forEach(t => paid[t.subCategory] = (paid[t.subCategory] || 0) + t.amount);
-                list.innerHTML = Object.entries(paid).map(([k,v]) => {
-                    const base = loanBases[k] || 0; const rem = base - v; if(rem > 0) remG += rem;
-                    return `<div class="bg-white p-5 rounded-3xl border shadow-sm border-gray-100"><p class="font-black text-gray-800 mb-3 uppercase text-xs tracking-wider">${k}</p>
-                        <div class="grid grid-cols-2 text-center border-t border-gray-50 pt-3 gap-2">
-                            <div class="bg-indigo-50/50 p-2 rounded-2xl"><p class="text-[8px] text-gray-400 font-bold uppercase">Paid</p><p class="font-bold text-indigo-600 text-sm">₹${v.toLocaleString()}</p></div>
-                            <div class="bg-red-50/50 p-2 rounded-2xl"><p class="text-[8px] text-gray-400 font-bold uppercase">Balance</p><p class="font-bold text-red-500 text-sm">₹${(base>0?rem:0).toLocaleString()}</p></div>
-                        </div></div>`;
-                }).join('') || '<p class="text-center py-20 text-gray-400 font-bold text-[10px] uppercase">No active loans found.</p>';
-                document.getElementById('total-remaining-debt').innerText = `₹${remG.toLocaleString()}`;
+                const list = document.getElementById('debt-list'); if(!list) return; let remG = 0; onSnapshot(collection(db, "loan_bases"), (snapB) => {
+                    const lb = {}; snapB.forEach(d => lb[d.id] = d.data().total);
+                    const paid = {}; allData.filter(t => t.category.toLowerCase().includes("liabilities")).forEach(t => paid[t.subCategory] = (paid[t.subCategory] || 0) + t.amount);
+                    list.innerHTML = Object.entries(paid).map(([k,v]) => {
+                        const base = lb[k] || 0; const rem = base - v; if(rem > 0) remG += rem;
+                        return `<div class="bg-white p-5 rounded-3xl border shadow-sm border-gray-100"><p class="font-black text-gray-800 mb-3 uppercase text-xs tracking-wider">${k}</p>
+                            <div class="grid grid-cols-2 text-center border-t border-gray-50 pt-3 gap-2">
+                                <div class="bg-indigo-50/50 p-2 rounded-2xl"><p class="text-[8px] text-gray-400 font-bold uppercase">Paid</p><p class="font-bold text-indigo-600 text-sm">₹${v.toLocaleString()}</p></div>
+                                <div class="bg-red-50/50 p-2 rounded-2xl"><p class="text-[8px] text-gray-400 font-bold uppercase">Balance</p><p class="font-bold text-red-500 text-sm">₹${(base>0?rem:0).toLocaleString()}</p></div>
+                            </div></div>`;
+                    }).join('') || '<p class="text-center py-20 text-gray-400 font-bold text-[10px] uppercase">No active loans.</p>';
+                    document.getElementById('total-remaining-debt').innerText = `₹${remG.toLocaleString()}`;
+                });
             }
-
             function renderStocks() { 
-                const s = allData.filter(t => t.category.toLowerCase().includes("investment")); 
-                const totalI = s.reduce((sum, item) => sum + item.amount, 0); 
-                document.getElementById('total-invested-amt').innerText = `₹${totalI.toLocaleString()}`; 
-                const list = document.getElementById('stock-list'); if(!list) return; 
-                list.innerHTML = s.map(t => `<div class="bg-white p-5 rounded-3xl border flex flex-col shadow-sm gap-1 border-indigo-50">
-                    <div class="flex justify-between items-center"><p class="font-black text-gray-800 text-sm leading-tight">${t.subCategory}</p><p class="font-black text-indigo-700 text-lg">₹${t.amount.toLocaleString()}</p></div>
-                    <p class="text-[10px] text-indigo-400 font-bold italic">${t.note || 'No description'}</p>
-                    <p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">${t.date?.toDate ? t.date.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}</p></div>`).join('') || '<p class="text-center py-20 text-gray-400 text-sm font-bold uppercase tracking-widest">No investments found.</p>'; 
+                const s = allData.filter(t => t.category.toLowerCase().includes("investment")); const totalI = s.reduce((sum, item) => sum + item.amount, 0); document.getElementById('total-invested-amt').innerText = `₹${totalI.toLocaleString()}`; const list = document.getElementById('stock-list'); if(!list) return; 
+                list.innerHTML = s.map(t => `<div class="bg-white p-5 rounded-3xl border flex flex-col shadow-sm gap-1 border-indigo-50"><div class="flex justify-between items-center"><p class="font-black text-gray-800 text-sm leading-tight">${t.subCategory}</p><p class="font-black text-indigo-700 text-lg">₹${t.amount.toLocaleString()}</p></div><p class="text-[10px] text-indigo-400 font-bold italic">${t.note || 'No description'}</p><p class="text-[8px] text-gray-400 font-bold uppercase tracking-widest mt-1">${t.date?.toDate ? t.date.toDate().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : ''}</p></div>`).join('') || '<p class="text-center py-20 text-gray-400 text-sm font-bold uppercase tracking-widest">No investments.</p>'; 
             }
             window.generateAnalytics = () => {
-                const f = document.getElementById('filter-from').value; const t = document.getElementById('filter-to').value;
-                const cat = document.getElementById('rpt-cat').value; const sub = document.getElementById('rpt-sub').value;
-                let filtered = allData.filter(x => x.type === 'Expense');
-                if(f && t) filtered = filtered.filter(x => { const d = x.date?.toDate ? x.date.toDate().toISOString().split('T')[0] : ''; return d >= f && d <= t; });
-                if(cat !== 'All') filtered = filtered.filter(x => x.category === cat);
-                if(sub !== 'All') filtered = filtered.filter(x => x.subCategory === sub);
-                const stats = {}; filtered.forEach(t => stats[t.category] = (stats[t.category] || 0) + t.amount);
+                const stats = {}; allData.filter(t => t.type === 'Expense').forEach(t => stats[t.category] = (stats[t.category] || 0) + t.amount);
                 const ctx = document.getElementById('expenseChart').getContext('2d'); if(myChart) myChart.destroy();
                 myChart = new Chart(ctx, { type: 'doughnut', data: { labels: Object.keys(stats), datasets: [{ data: Object.values(stats), backgroundColor: ['#4f46e5', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'] }] }, options: { cutout: '75%', plugins: { legend: { position: 'bottom' } } } });
                 document.getElementById('report-list').innerHTML = Object.entries(stats).map(([k,v]) => `<div class="flex justify-between font-bold text-sm"><span>${k}</span><span class="text-indigo-600">₹${v.toLocaleString()}</span></div>`).join('');
